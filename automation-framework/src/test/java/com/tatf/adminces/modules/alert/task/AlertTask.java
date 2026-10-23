@@ -30,5 +30,10 @@ public class AlertTask {
 
     public void confirm() {
         alert.clickConfirm();
+        alert.waitForClose();
+    }
+
+    public void confirmQuestion() {
+        alert.clickConfirm();
     }
 }

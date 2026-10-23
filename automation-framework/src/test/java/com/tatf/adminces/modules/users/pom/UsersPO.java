@@ -1,6 +1,7 @@
 package com.tatf.adminces.modules.users.pom;
 
 import com.tatf.core.browser.IBrowser;
+import org.openqa.selenium.Keys;
 
 public class UsersPO {
 
@@ -36,6 +37,6 @@ public class UsersPO {
 
     public void clickDeleteUser(String email) {
         browser.wait(email).id();
-        browser.find().id(email).click();
+        browser.find().id(email).write(Keys.ENTER.toString());
     }
 }

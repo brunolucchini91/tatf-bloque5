@@ -2,23 +2,21 @@ package com.tatf.adminces.modules.login.task;
 
 import com.tatf.adminces.modules.login.data.LoginData;
 import com.tatf.adminces.modules.login.pom.LoginPO;
+import com.tatf.adminces.modules.menu.pom.MenuPO;
 import com.tatf.core.browser.IBrowser;
 import com.tatf.core.verification.IVerify;
 
 public class LoginTask {
-
-    private final IBrowser browser;
+    private final MenuPO menu;
     private final LoginPO login;
 
     public LoginTask(IBrowser browser) {
-        this.browser = browser;
+        this.menu = new MenuPO(browser);
         this.login = new LoginPO(browser);
     }
-    public void enterToLogin() {
-        browser.find()
-                .xpath("//a[@href='/adminces/login']")
-                .click();
 
+    public void enterToLogin() {
+        menu.clickLogin();
         login.waitForPage();
     }
 

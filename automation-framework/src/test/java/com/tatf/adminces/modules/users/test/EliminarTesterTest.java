@@ -4,16 +4,25 @@ import com.tatf.adminces.modules.access.task.AccessTask;
 import com.tatf.adminces.modules.alert.data.AlertData;
 import com.tatf.adminces.modules.alert.task.AlertTask;
 import com.tatf.adminces.modules.base.BaseTest;
+import com.tatf.adminces.modules.base.DataGenerator;
+import com.tatf.adminces.modules.createuser.data.CreateUserData;
 import com.tatf.adminces.modules.createuser.task.CreateUserTask;
+import com.tatf.adminces.modules.login.data.LoginData;
 import com.tatf.adminces.modules.login.task.LoginTask;
+import com.tatf.adminces.modules.register.data.RegisterData;
 import com.tatf.adminces.modules.register.task.RegisterTask;
+import com.tatf.adminces.modules.users.data.UsersData;
 import com.tatf.adminces.modules.users.task.UsersTask;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 
+@Tag("tester")
+@Tag("regresion")
+@DisplayName("Eliminar cuenta Tester")
 public class EliminarTesterTest extends BaseTest {
-
     private AccessTask access;
     private RegisterTask register;
     private AlertTask alert;
@@ -31,85 +40,36 @@ public class EliminarTesterTest extends BaseTest {
         users = new UsersTask(browser);
     }
 
-    @Test
-    @DisplayName("Eliminar cuenta Tester")
-    public void eliminarTesterTest() {
-
-        String adminEmail =
-                "admin" + System.currentTimeMillis() + "@gmail.com";
-
-        String testerEmail =
-                "tester" + System.currentTimeMillis() + "@gmail.com";
-
-        String adminPassword = "Admin123";
+    @ParameterizedTest(name = "{arguments}")
+    @CsvFileSource(resources = "/data/testers.csv", useHeadersInDisplayName = true)
+    public void eliminarTesterTest(String nombre, String apellido, String pais,
+                                   String contrasena, String perfil) {
+        String adminEmail = DataGenerator.uniqueEmail(RegisterData.EMAIL_PREFIX);
+        String testerEmail = DataGenerator.uniqueEmail(CreateUserData.EMAIL_PREFIX);
 
         access.enterToSystem();
-
         register.enterToRegister();
-
-        register.createAdministrator(
-                "Bruno",
-                "Admin",
-                adminEmail,
-                adminPassword,
-                "Uruguay"
-        );
-
-        alert.verify(
-                AlertData.SUCCESS_TITLE,
-                "Usuario creado."
-        );
-
+        register.createAdministrator(RegisterData.FIRST_NAME, RegisterData.LAST_NAME,
+                adminEmail, RegisterData.PASSWORD, RegisterData.COUNTRY);
+        alert.verify(AlertData.SUCCESS_TITLE, RegisterData.SUCCESS_MESSAGE);
         alert.confirm();
-
         login.enterToLogin();
-        login.login(adminEmail, adminPassword);
-
-        alert.verify(
-                AlertData.SUCCESS_TITLE,
-                "Sesión iniciada."
-        );
-
+        login.login(adminEmail, RegisterData.PASSWORD);
+        alert.verify(AlertData.SUCCESS_TITLE, LoginData.SUCCESS_MESSAGE);
         alert.confirm();
-
         createUser.enterToCreateUser();
-
-        createUser.createTester(
-                "Bruno",
-                "Tester",
-                testerEmail,
-                "Uruguay",
-                "Tester123",
-                "testerSenior"
-        );
-
-        alert.verify(
-                AlertData.SUCCESS_TITLE,
-                "Usuario creado."
-        );
-
+        createUser.createTester(nombre, apellido, testerEmail, pais, contrasena, perfil);
+        alert.verify(AlertData.SUCCESS_TITLE, CreateUserData.SUCCESS_MESSAGE);
         alert.confirm();
 
         users.enterToUsers();
         users.verifyUsersPage();
         users.verifyUserExists(testerEmail);
-
         users.deleteUser(testerEmail);
-
-        alert.verify(
-                AlertData.QUESTION_TITLE,
-                "¿Eliminar usuario: " + testerEmail + "?"
-        );
-
+        alert.verify(AlertData.QUESTION_TITLE, UsersData.deleteQuestion(testerEmail));
+        alert.confirmQuestion();
+        alert.verify(AlertData.SUCCESS_TITLE, UsersData.DELETED_MESSAGE);
         alert.confirm();
-
-        alert.verify(
-                AlertData.SUCCESS_TITLE,
-                "Usuario eliminado."
-        );
-
-        alert.confirm();
-
         users.verifyUserDoesNotExist(testerEmail);
     }
 }

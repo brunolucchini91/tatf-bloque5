@@ -1,25 +1,22 @@
 package com.tatf.adminces.modules.users.task;
 
+import com.tatf.adminces.modules.menu.pom.MenuPO;
 import com.tatf.adminces.modules.users.data.UsersData;
 import com.tatf.adminces.modules.users.pom.UsersPO;
 import com.tatf.core.browser.IBrowser;
 import com.tatf.core.verification.IVerify;
 
 public class UsersTask {
-
-    private final IBrowser browser;
+    private final MenuPO menu;
     private final UsersPO users;
 
     public UsersTask(IBrowser browser) {
-        this.browser = browser;
+        this.menu = new MenuPO(browser);
         this.users = new UsersPO(browser);
     }
 
     public void enterToUsers() {
-        browser.find()
-                .xpath("//a[@href='/adminces/view-users']")
-                .click();
-
+        menu.clickUsers();
         users.waitForPage();
     }
 

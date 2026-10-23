@@ -93,6 +93,13 @@ public class Wait {
     }
 
     /**
+     * Espera a que el elemento por css deje de estar visible (o desaparezca del DOM).
+     */
+    public void cssInvisible() {
+        webDriverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(locator)));
+    }
+
+    /**
      * Espera a que haya una alerta presente.
      */
     public void alertPresent() {

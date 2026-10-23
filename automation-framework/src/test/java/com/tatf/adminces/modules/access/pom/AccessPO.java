@@ -3,7 +3,6 @@ package com.tatf.adminces.modules.access.pom;
 import com.tatf.core.browser.IBrowser;
 
 public class AccessPO {
-
     private final IBrowser browser;
 
     private final String passwordInput = "pass";
@@ -14,6 +13,10 @@ public class AccessPO {
 
     public AccessPO(IBrowser browser) {
         this.browser = browser;
+    }
+
+    public void open(String url) {
+        browser.interaction().navigateTo(url);
     }
 
     public void waitForPasswordInput() {

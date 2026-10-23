@@ -1,25 +1,22 @@
 package com.tatf.adminces.modules.resetpassword.task;
 
+import com.tatf.adminces.modules.menu.pom.MenuPO;
 import com.tatf.adminces.modules.resetpassword.data.ResetPasswordData;
 import com.tatf.adminces.modules.resetpassword.pom.ResetPasswordPO;
 import com.tatf.core.browser.IBrowser;
 import com.tatf.core.verification.IVerify;
 
 public class ResetPasswordTask {
-
-    private final IBrowser browser;
+    private final MenuPO menu;
     private final ResetPasswordPO resetPassword;
 
     public ResetPasswordTask(IBrowser browser) {
-        this.browser = browser;
+        this.menu = new MenuPO(browser);
         this.resetPassword = new ResetPasswordPO(browser);
     }
 
     public void enterToResetPassword() {
-        browser.find()
-                .xpath("//a[@href='/adminces/forgot-password']")
-                .click();
-
+        menu.clickResetPassword();
         resetPassword.waitForPage();
     }
 

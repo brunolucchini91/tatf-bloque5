@@ -1,25 +1,22 @@
 package com.tatf.adminces.modules.register.task;
 
+import com.tatf.adminces.modules.menu.pom.MenuPO;
 import com.tatf.adminces.modules.register.data.RegisterData;
 import com.tatf.adminces.modules.register.pom.RegisterPO;
 import com.tatf.core.browser.IBrowser;
 import com.tatf.core.verification.IVerify;
 
 public class RegisterTask {
-
-    private final IBrowser browser;
+    private final MenuPO menu;
     private final RegisterPO register;
 
     public RegisterTask(IBrowser browser) {
-        this.browser = browser;
+        this.menu = new MenuPO(browser);
         this.register = new RegisterPO(browser);
     }
 
     public void enterToRegister() {
-        browser.find()
-                .xpath("//a[@href='/adminces/register']")
-                .click();
-
+        menu.clickRegister();
         register.waitForPage();
     }
 
@@ -37,7 +34,6 @@ public class RegisterTask {
             String email,
             String password,
             String country) {
-
         register.enterFirstName(firstName);
         register.enterLastName(lastName);
         register.enterEmail(email);

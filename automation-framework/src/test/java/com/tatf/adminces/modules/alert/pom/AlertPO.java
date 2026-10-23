@@ -9,6 +9,7 @@ public class AlertPO {
     private final String title = "swal2-title";
     private final String message = "swal2-html-container";
     private final String confirmButton = "button.swal2-confirm";
+    private final String container = "div.swal2-container";
 
     public AlertPO(IBrowser browser) {
         this.browser = browser;
@@ -29,5 +30,9 @@ public class AlertPO {
     public void clickConfirm() {
         browser.wait(confirmButton).css();
         browser.find().css(confirmButton).click();
+    }
+
+    public void waitForClose() {
+        browser.wait(container).cssInvisible();
     }
 }

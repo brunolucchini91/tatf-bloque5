@@ -2,24 +2,21 @@ package com.tatf.adminces.modules.createuser.task;
 
 import com.tatf.adminces.modules.createuser.data.CreateUserData;
 import com.tatf.adminces.modules.createuser.pom.CreateUserPO;
+import com.tatf.adminces.modules.menu.pom.MenuPO;
 import com.tatf.core.browser.IBrowser;
 import com.tatf.core.verification.IVerify;
 
 public class CreateUserTask {
-
-    private final IBrowser browser;
+    private final MenuPO menu;
     private final CreateUserPO createUser;
 
     public CreateUserTask(IBrowser browser) {
-        this.browser = browser;
+        this.menu = new MenuPO(browser);
         this.createUser = new CreateUserPO(browser);
     }
 
     public void enterToCreateUser() {
-        browser.find()
-                .xpath("//a[@href='/adminces/create-user']")
-                .click();
-
+        menu.clickCreateUser();
         createUser.waitForPage();
     }
 
@@ -38,7 +35,6 @@ public class CreateUserTask {
             String country,
             String password,
             String profile) {
-
         createUser.enterFirstName(firstName);
         createUser.enterLastName(lastName);
         createUser.enterEmail(email);

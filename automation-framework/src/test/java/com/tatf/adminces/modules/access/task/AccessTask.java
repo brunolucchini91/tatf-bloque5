@@ -6,18 +6,14 @@ import com.tatf.core.browser.IBrowser;
 import com.tatf.core.verification.IVerify;
 
 public class AccessTask {
-
-    private final IBrowser browser;
     private final AccessPO access;
 
     public AccessTask(IBrowser browser) {
-        this.browser = browser;
         this.access = new AccessPO(browser);
     }
 
     public void enterToSystem() {
-        browser.interaction().navigateTo(AccessData.URL);
-
+        access.open(AccessData.URL);
         access.waitForPasswordInput();
         access.enterPassword(AccessData.ACCESS_HASH);
         access.clickEnter();
